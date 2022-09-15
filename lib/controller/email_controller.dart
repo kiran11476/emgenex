@@ -1,40 +1,57 @@
-import 'package:emgenex/model/signin.dart';
+import 'dart:developer';
+
 import 'package:emgenex/view/screenhome.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../model/log.dart';
 import '../service/service.dart';
 
 class LogInController extends GetxController {
   void userSignin(String email, String password) async {
-    Map<String, dynamic> signIn = {"email": email, "password": password};
-    try {
-      final response = await AuthServices().checkLogin(signIn);
+    if (email == 'eve.holt@reqres.in' && password == 'cityslicka') {
+      Map<String, dynamic> signindata = {
+        'email': email,
+        'password': password,
+      };
 
-      if (response!.statusCode == 200 || response.statusCode == 201) {
-        SignInModelClass datas = signInModelClassFromJson(response.data);
+      final response = await AuthServices().checkLogin(signindata);
 
-        Get.offAll(
-          const ScreenHome(),
-        );
+      log(response.toString());
+      try {
+        if (response!.statusCode == 200 || response.statusCode == 201) {
+          log('3');
+          final datas = logModelClassFromJson(response.data);
+          log('4');
+          Get.offAll(
+            ScreenHome(),
+          );
 
-        Get.snackbar(
-          'Login sucessfull',
-          'user logged',
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.white,
-        );
-      } else {
-        Get.snackbar(
-          'Login Error',
-          'entered mail or password is incorrect',
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.red,
-        );
+          Get.snackbar(
+            'Login sucessfull',
+            'user logged',
+            snackPosition: SnackPosition.TOP,
+            colorText: Colors.white,
+          );
+        } else {
+          Get.snackbar(
+            'Login Error',
+            'entered mail or password is incorrect',
+            snackPosition: SnackPosition.TOP,
+            colorText: Colors.red,
+          );
+        }
+      } catch (e) {
+        Get.snackbar('Login Error', 'entered mail or password is incorrect',
+            snackPosition: SnackPosition.TOP, colorText: Colors.red);
       }
-    } catch (e) {
-      Get.snackbar('Login Error', 'entered mail or password is incorrect',
-          snackPosition: SnackPosition.TOP, colorText: Colors.red);
+    } else {
+      Get.snackbar(
+          snackPosition: SnackPosition.BOTTOM,
+          'Login Error',
+          'please enter valid admin data',
+          colorText: Colors.red);
+      return;
     }
   }
 }
