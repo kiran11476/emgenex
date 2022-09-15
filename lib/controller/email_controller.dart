@@ -20,11 +20,10 @@ class LogInController extends GetxController {
       log(response.toString());
       try {
         if (response!.statusCode == 200 || response.statusCode == 201) {
-          log('3');
           final datas = logModelClassFromJson(response.data);
-          log('4');
+
           Get.offAll(
-            ScreenHome(),
+            const ScreenHome(),
           );
 
           Get.snackbar(
