@@ -17,19 +17,21 @@ class ScreenHome extends StatelessWidget {
         title: const Text('Data'),
       ),
       body: SizedBox(
-          height: 500,
-          child: GetBuilder<ProductController>(
-              init: ProductController(),
-              initState: (_) {},
-              builder: (controller) => controller.users == null
-                  ? Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      itemCount: controller.users!.length,
-                      itemBuilder: (BuildContext context, index) {
-                        return ListTile(
-                          title: Text(controller.users![index].name),
-                        );
-                      }))),
+        height: 500,
+        child: GetBuilder<ProductController>(
+          init: ProductController(),
+          initState: (_) {},
+          builder: (controller) => controller.users == null
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: controller.users!.length,
+                  itemBuilder: (BuildContext context, index) {
+                    return ListTile(
+                      title: Text(controller.users![index].name),
+                    );
+                  }),
+        ),
+      ),
     );
   }
 }
